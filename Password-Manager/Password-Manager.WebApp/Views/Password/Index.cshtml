@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Service)
             </th>
             <th>
@@ -27,21 +24,30 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
+            <td type="password">
                 @Html.DisplayFor(modelItem => item.Service)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Pass)
+                *********
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @* Javascript function coping pass to the clipboard *@
+                <script>
+                    function copyToClipboard(pass) {
+                        navigator.clipboard.writeText(pass);
+                    }
+                </script>
+                <div class="btn-group">
+                    <button onClick='copyToClipboard("@item.Pass")' type="button" class="btn btn-sm btn-outline-dark text-light">
+                        Copy
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-dark">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @style = "color: white;" })
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-dark">
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @style = "color: white;" })
+                    </button>
+                </div>
             </td>
         </tr>
 }
