@@ -4,12 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Twoje hasła</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="mb-5">
+    <p>
+        <button type="button" class="btn btn-outline-secondary">
+            @Html.ActionLink("Dodaj nowe hasło", "Create", "Password", null, new { @style = "color: white;" })
+        </button>
+    </p>
+</div>
+
+<table class="table table-striped table-dark">
     <thead>
         <tr>
             <th>
@@ -38,13 +43,13 @@
                     }
                 </script>
                 <div class="btn-group">
-                    <button onClick='copyToClipboard("@item.Pass")' type="button" class="btn btn-sm btn-outline-dark text-light">
+                    <button onClick='copyToClipboard("@item.Pass")' type="button" class="btn btn-sm btn-outline-secondary text-light">
                         Copy
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-dark">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @style = "color: white;" })
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-dark">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @style = "color: white;" })
                     </button>
                 </div>

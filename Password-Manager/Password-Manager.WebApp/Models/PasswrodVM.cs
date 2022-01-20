@@ -15,7 +15,7 @@ namespace Password_Manager.WebApp.Models
         public string Service { get; set; }
 
         [Required(ErrorMessage = "Hasło jest wymagane!")]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         [DataType(DataType.Password)]
         public string Pass { get; set; }
 
