@@ -15,7 +15,7 @@ namespace Password_Manager.WebAPI.Controllers
             _passwordRepository = passwordRepository;
         }
 
-        // post
+        // password
         [HttpGet]
         public async Task<IActionResult> BrowseAll()
         {
@@ -23,7 +23,7 @@ namespace Password_Manager.WebAPI.Controllers
             return Json(z);
         }
 
-        // post/{id}
+        // password/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPassword(int id)
         {
@@ -31,25 +31,25 @@ namespace Password_Manager.WebAPI.Controllers
             return Json(z);
         }
 
-        // post
+        // password
         [HttpPost]
-        public async Task<IActionResult> AddPassword([FromBody] CreatePassword post)
+        public async Task<IActionResult> AddPassword([FromBody] CreatePassword password)
         {
-            await _passwordRepository.AddPasswordAsync(post);
-            return Created("", post);
+            await _passwordRepository.AddPasswordAsync(password);
+            return Created("", password);
         }
 
-        // post/{id}
+        // password/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditPassword(int id, [FromBody] CreatePassword post)
+        public async Task<IActionResult> EditPassword(int id, [FromBody] CreatePassword password)
         {
-            await _passwordRepository.EditPasswordAsync(id, post);
+            await _passwordRepository.EditPasswordAsync(id, password);
             return NoContent();
         }
 
-        // post/{id}
+        // password/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
+        public async Task<IActionResult> DeletePassword(int id)
         {
             await _passwordRepository.DeletePasswordAsync(id);
             return NoContent();

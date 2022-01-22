@@ -31,29 +31,12 @@ namespace Password_Manager.WebAPI
             services.AddScoped<IPasswordRepository, PasswordRepository>();
             services.AddScoped<IPasswordService, PasswordService>();
 
+            services.AddScoped<IMasterPasswordRepository, MasterPasswordRepository>();
+            services.AddScoped<IMasterPasswordService, MasterPasswordService>();
+
             services.AddDbContext<AppDbContext>(
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("PostConnectionString")));
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = "http://www.nowakom3.pl",
-                    ValidIssuer = "http://www.nowakom3.pl",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo2137"))
-                };
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
