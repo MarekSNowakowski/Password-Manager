@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,4 +9,23 @@
     <h1 class="display-4">Witaj</h1>
     <p>Password Manager - projekt zaliczeniowy na przedmiot "Ochrona danych w systemach informatycznych"</p>
     <p>Marek Nowakowski</p>
+
+    <div class="mt-5">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <p>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary">
+                        <a class="nav-link text-light" asp-area="" asp-controller="Password" asp-action="Index">Zarządzaj hasłami</a>
+                    </button>
+                </div>
+            </p>
+        }
+        else
+        {
+            <p>
+                <a asp-controller="Account" asp-action="Login">Zaloguj się</a> lub <a asp-controller="Account" asp-action="Register">Zarejestruj</a>, aby dodać hasła
+            </p>
+        }
+    </div>
 </div>
