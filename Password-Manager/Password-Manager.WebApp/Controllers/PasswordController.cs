@@ -205,6 +205,8 @@ namespace Password_Manager.WebApp.Controllers
 
             string _restpath = GetHostUrl().Content + CN();
 
+            s.Author = User.Identity.Name;
+
             PasswrodVM result = new PasswrodVM();
 
             try

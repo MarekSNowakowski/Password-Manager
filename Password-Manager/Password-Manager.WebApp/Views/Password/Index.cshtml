@@ -21,6 +21,9 @@
                 @Html.DisplayNameFor(model => model.Service)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Pass)
             </th>
             <th></th>
@@ -31,6 +34,9 @@
         <tr>
             <td type="password">
                 @Html.DisplayFor(modelItem => item.Service)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
             </td>
             <td>
                 *********

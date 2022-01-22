@@ -61,6 +61,7 @@ namespace Password_Manager.Infrastructure.Repositories
                 var z = _appDbContext.Password.FirstOrDefault(x => x.Id == s.Id);
 
                 z.Service = s.Service;
+                z.Username = s.Username;
                 z.Pass = s.Pass;
 
                 _appDbContext.SaveChanges();

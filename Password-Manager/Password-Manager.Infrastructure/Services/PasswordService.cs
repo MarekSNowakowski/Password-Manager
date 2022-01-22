@@ -2,10 +2,8 @@
 using Password_Manager.Core.Repositories;
 using Password_Manager.Infrastructure.Commands;
 using Password_Manager.Infrastructure.DTO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Password_Manager.Infrastructure.Services
@@ -25,6 +23,7 @@ namespace Password_Manager.Infrastructure.Services
             {
                 Id = x.Id,
                 Service = x.Service,
+                Username = x.Username,
                 Pass = x.Pass,
                 Author = x.Author
             });
@@ -36,6 +35,7 @@ namespace Password_Manager.Infrastructure.Services
             {
                 Id = password.Id,
                 Service = password.Service,
+                Username = password.Username,
                 Pass = password.Pass,
                 Author = password.Author
             };
@@ -66,6 +66,7 @@ namespace Password_Manager.Infrastructure.Services
             Password newPassword = new Password()
             {
                 Service = password.Service,
+                Username = password.Username,
                 Pass = password.Pass,
                 Author = password.Author
             };
@@ -82,6 +83,7 @@ namespace Password_Manager.Infrastructure.Services
         {
             Password updatePassword = await _passwordRepository.GetAsync(id);
             updatePassword.Service = password.Service;
+            updatePassword.Username = password.Username;
             updatePassword.Pass = password.Pass;
 
             await _passwordRepository.UpdateAsync(updatePassword);
