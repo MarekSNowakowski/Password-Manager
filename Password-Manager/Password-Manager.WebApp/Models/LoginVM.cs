@@ -12,5 +12,10 @@ namespace Password_Manager.WebApp.Models
         [Display(Name = "Hasło")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Master password jest wymagane!")]
+        [Display(Name = "Master password")]
+        [DataType(DataType.Password)]
+        public string MasterPassword { get; set; }
     }
 }

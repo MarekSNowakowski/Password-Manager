@@ -7,7 +7,7 @@
 
 </h3>
 
-<form asp-action="Register" asp-controller="Account" method="post" class="form-horizontal" role="form">
+<form asp-action="Register" asp-controller="Account" method="post" class="form-horizontal" role="form" autocomplete="off">
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -15,7 +15,7 @@
         <label asp-for="UserName" class="col-md-2 control-label"></label>
 
         <div class="col-md-10">
-            <input asp-for="UserName" class="form-control" />
+            <input asp-for="UserName" class="form-control" autocomplete="new-user" />
             <span asp-validation-for="UserName" class="text-danger"></span>
         </div>
     </div>
@@ -23,8 +23,16 @@
     <div class="form-group">
         <label asp-for="Password" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Password" class="form-control" />
+            <input asp-for="Password" class="form-control" autocomplete="new-password" />
             <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MasterPassword" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="MasterPassword" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="MasterPassword" class="text-danger"></span>
         </div>
     </div>
 
