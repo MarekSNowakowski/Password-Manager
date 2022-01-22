@@ -13,5 +13,6 @@ namespace Password_Manager.Infrastructure.Repositories
         }
 
         public DbSet<Password> Password { get; set; }
+        public DbSet<MasterPassword> MasterPassword { get; set; }
     }
 }

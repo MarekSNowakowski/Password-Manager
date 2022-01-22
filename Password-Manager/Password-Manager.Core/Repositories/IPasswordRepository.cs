@@ -1,7 +1,5 @@
 ﻿using Password_Manager.Core.Domain;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Password_Manager.Core.Repositories

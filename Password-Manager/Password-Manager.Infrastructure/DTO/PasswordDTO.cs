@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Password_Manager.Infrastructure.DTO
+﻿namespace Password_Manager.Infrastructure.DTO
 {
     public class PasswordDTO
     {

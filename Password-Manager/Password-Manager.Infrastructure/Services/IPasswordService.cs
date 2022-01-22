@@ -9,8 +9,8 @@ namespace Password_Manager.Infrastructure.Services
     {
         Task<IEnumerable<PasswordDTO>> BrowseAllAsync();
         Task<PasswordDTO> GetPasswordAsync(int id);
-        Task AddPasswordAsync(CreatePassword post);
-        Task EditPasswordAsync(int id, CreatePassword post);
+        Task AddPasswordAsync(CreatePassword password);
+        Task EditPasswordAsync(int id, CreatePassword password);
         Task DeletePasswordAsync(int id);
     }
 }
