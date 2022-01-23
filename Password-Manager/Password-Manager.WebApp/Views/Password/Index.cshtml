@@ -1,66 +1,28 @@
-﻿@model IEnumerable<Password_Manager.WebApp.Models.PasswrodVM>
+﻿@model Password_Manager.WebApp.Models.MasterPasswordVM
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Twoje hasła</h1>
+<h3>
+    Wprowadź hasło główne
+</h3>
 
-<div class="mb-5">
-    <p>
-        <button type="button" class="btn btn-outline-secondary">
-            @Html.ActionLink("Dodaj nowe hasło", "Create", "Password", null, new { @style = "color: white;" })
-        </button>
-    </p>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PasswordList" asp-controller="Password" method="post" class="form-horizontal" role="form">
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="MasterPassword" class="control-label"></label>
+                <input asp-for="MasterPassword" class="form-control" />
+                <span asp-validation-for="MasterPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Logowanie" />
+            </div>
+        </form>
+    </div>
 </div>
-
-<table class="table table-striped table-dark">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Service)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pass)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Where(x => x.Author == User.Identity.Name)) {
-        <tr>
-            <td type="password">
-                @Html.DisplayFor(modelItem => item.Service)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                *********
-            </td>
-            <td>
-                @* Javascript function coping pass to the clipboard *@
-                <script>
-                    function copyToClipboard(pass) {
-                        navigator.clipboard.writeText(pass);
-                    }
-                </script>
-                <div class="btn-group">
-                    <button onClick='copyToClipboard("@item.Pass")' type="button" class="btn btn-sm btn-outline-secondary text-light">
-                        Copy
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @style = "color: white;" })
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @style = "color: white;" })
-                    </button>
-                </div>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>

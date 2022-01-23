@@ -23,5 +23,16 @@ namespace Password_Manager.WebApp.Models
         public string Pass { get; set; }
 
         public string Author { get; set; }
+
+        public byte[] PassEncrypted { get; set; }
+
+        // Only for adding new password
+        [Required(ErrorMessage = "Master password jest wymagane!")]
+        [Display(Name = "Master password")]
+        [DataType(DataType.Password)]
+        public string MasterPassword { get; set; }
+
+        // For verification of master password
+        public string MasterPasswordHash { get; set; }
     }
 }

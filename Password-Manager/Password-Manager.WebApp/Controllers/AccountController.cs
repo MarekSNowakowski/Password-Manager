@@ -42,6 +42,9 @@ namespace Password_Manager.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM loginVM)
         {
+            // We don't want to verify master passwrod on login
+            ModelState.Remove("MasterPassword");
+
             if (!ModelState.IsValid)
             {
                 return View(loginVM);
