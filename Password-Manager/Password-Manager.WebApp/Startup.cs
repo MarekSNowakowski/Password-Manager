@@ -34,7 +34,16 @@ namespace Password_Manager.WebApp
             ));
 
             services.AddIdentity<IdentityUser, IdentityRole>(
-                ).AddEntityFrameworkStores<AppDbContext>();
+                ).AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Max 10 failed login attempts
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                // After 10 attempts loging is locked for 10 minutes
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

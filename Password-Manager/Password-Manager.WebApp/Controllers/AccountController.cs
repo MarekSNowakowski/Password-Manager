@@ -53,18 +53,30 @@ namespace Password_Manager.WebApp.Controllers
             // returns user name to login
             var user = await _userManager.FindByNameAsync(loginVM.UserName);
 
-            if(user != null)
+            Microsoft.AspNetCore.Identity.SignInResult result;
+
+            if (user != null)
             {
                 // login try
-                var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
+                result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, true);
 
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
                 }
+                else if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("Lockout", "Przekroczono limit nieudanych prób logowania. Spróbuj ponownie później.");
+                }
+                else
+                {
+                    ModelState.AddModelError("Failure", "Niepoprawna nazwa użytkownika lub hasło...");
+                }
             }
-
-            ModelState.AddModelError("", "Niepoprawna nazwa użytkownika lub hasło...");
+            else
+            {
+                ModelState.AddModelError("Failure", "Niepoprawna nazwa użytkownika lub hasło...");
+            }
 
             return View(loginVM);
         }
@@ -97,7 +109,6 @@ namespace Password_Manager.WebApp.Controllers
                     return RedirectToAction("Index", "Home");   //(metoda, controller)
                 }
             }
-
 
             ModelState.AddModelError("", "Niepoprawna nazwa użytkownika lub hasło...");
 
