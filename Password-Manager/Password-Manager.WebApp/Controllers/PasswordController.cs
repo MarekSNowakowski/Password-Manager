@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Password_Manager.WebApp.Controllers
 {
+    [Authorize]
     public class PasswordController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -90,7 +92,6 @@ namespace Password_Manager.WebApp.Controllers
                 pass.Pass = DecryptStringFromBytes_Aes(pass.PassEncrypted, masterPassword, IV, pass.Salt);
             }
 
-
             return View(passwordsList);    //view is strongly typed
         }
 
@@ -123,7 +124,23 @@ namespace Password_Manager.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(PasswrodVM s)
         {
+            // Check if master password is correct
+            if (s.MasterPassword != null && !await VerifyMasterPassword(s.MasterPassword))
+            {
+                ModelState.AddModelError("", "Niepoprawne hasło główne!");
+                return View(s);
+            }
+
             string _restpath = GetHostUrl().Content + CN();
+
+            // Generate a salt
+            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            byte[] salt = new byte[SALT_SIZE];
+            provider.GetBytes(salt);
+
+            s.Salt = salt;
+            s.PassEncrypted = EncryptStringToBytes_Aes(s.Pass, s.MasterPassword, IV, salt);
+            s.MasterPassword = null;
 
             PasswrodVM result = new PasswrodVM();
 
@@ -185,6 +202,13 @@ namespace Password_Manager.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PasswrodVM s)
         {
+            // Check if master password is correct
+            if (s.MasterPassword != null && !await VerifyMasterPassword(s.MasterPassword))
+            {
+                ModelState.AddModelError("", "Niepoprawne hasło główne!");
+                return View(s);
+            }
+
             string _restpath = GetHostUrl().Content + CN();
 
             // Generate a salt
