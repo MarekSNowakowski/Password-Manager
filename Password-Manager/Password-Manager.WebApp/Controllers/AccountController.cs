@@ -94,23 +94,38 @@ namespace Password_Manager.WebApp.Controllers
             {
                 var user = new IdentityUser() { UserName = loginVM.UserName };
 
+                var passwordValidator = new PasswordValidator<IdentityUser>();
+                var passwordValid = await passwordValidator.ValidateAsync(_userManager, null, loginVM.Password);
+                var masterPasswordValid = await passwordValidator.ValidateAsync(_userManager, null, loginVM.MasterPassword);
+                
+                if(!passwordValid.Succeeded || !masterPasswordValid.Succeeded)
+                {
+                    ModelState.AddModelError("WeakPassword", "Hasło lub hasło główne są zbyt słabe! Użyj dużych i małych liter, cyfr oraz znaków specjalnych.");
+                    return View(loginVM);
+                }
+
+                if(await _userManager.FindByNameAsync(loginVM.UserName) != null)
+                {
+                    ModelState.AddModelError("UsernameTaken", "Nazwa użytkownika jest już zajęta!");
+                    return View(loginVM);
+                }
+                
+                var result = await _userManager.CreateAsync(user, loginVM.Password);
+
                 MasterPasswordVM masterPasswordVM = new MasterPasswordVM()
                 {
                     Username = loginVM.UserName,
                     MasterPasswordHash = HashMasterPassword(loginVM.MasterPassword)
                 };
 
-                AddMasterPassword(masterPasswordVM);
-
-                var result = await _userManager.CreateAsync(user, loginVM.Password);
-
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
+                    AddMasterPassword(masterPasswordVM);
                     return RedirectToAction("Index", "Home");   //(metoda, controller)
                 }
             }
 
-            ModelState.AddModelError("", "Niepoprawna nazwa użytkownika lub hasło...");
+            ModelState.AddModelError("Failure", "Niepoprawna nazwa użytkownika lub hasło...");
 
             return View(loginVM);
         }
