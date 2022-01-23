@@ -26,6 +26,8 @@ namespace Password_Manager.WebApp.Models
 
         public byte[] PassEncrypted { get; set; }
 
+        public byte[] Salt { get; set; }
+
         // Only for adding new password
         [Required(ErrorMessage = "Master password jest wymagane!")]
         [Display(Name = "Master password")]

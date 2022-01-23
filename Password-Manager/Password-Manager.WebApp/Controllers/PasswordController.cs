@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Password_Manager.Infrastructure.Services;
 using Password_Manager.WebApp.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +23,7 @@ namespace Password_Manager.WebApp.Controllers
         //AES
         private readonly byte[] IV = Encoding.ASCII.GetBytes("OB8JQ5QREz7SLup6");
         //PBKDF2
-        public static readonly byte[] SALT = Encoding.ASCII.GetBytes("67r1m*Sk8os=U4-D*mtB2DsP"); // size in bytes
+        public const int SALT_SIZE = 24; // size in bytes
         public const int KEY_SIZE = 24; // size in bytes
         public const int ITERATIONS = 100000; // number of pbkdf2 iterations
 
@@ -88,7 +87,7 @@ namespace Password_Manager.WebApp.Controllers
 
             foreach (PasswrodVM pass in passwordsList)
             {
-                pass.Pass = DecryptStringFromBytes_Aes(pass.PassEncrypted, masterPassword, IV);
+                pass.Pass = DecryptStringFromBytes_Aes(pass.PassEncrypted, masterPassword, IV, pass.Salt);
             }
 
 
@@ -188,8 +187,14 @@ namespace Password_Manager.WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
 
+            // Generate a salt
+            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            byte[] salt = new byte[SALT_SIZE];
+            provider.GetBytes(salt);
+
+            s.Salt = salt;
             s.Author = User.Identity.Name;
-            s.PassEncrypted = EncryptStringToBytes_Aes(s.Pass, s.MasterPassword, IV);
+            s.PassEncrypted = EncryptStringToBytes_Aes(s.Pass, s.MasterPassword, IV, salt);
             s.MasterPassword = null;
 
             PasswrodVM result = new PasswrodVM();
@@ -219,7 +224,7 @@ namespace Password_Manager.WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        static byte[] EncryptStringToBytes_Aes(string password, string masterPassword, byte[] IV)
+        static byte[] EncryptStringToBytes_Aes(string password, string masterPassword, byte[] IV, byte[] salt)
         {
             // Check arguments.
             if (password == null || password.Length <= 0)
@@ -233,7 +238,7 @@ namespace Password_Manager.WebApp.Controllers
             byte[] encrypted;
 
             // Generate the key
-            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(masterPassBytes, SALT, ITERATIONS);
+            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(masterPassBytes, salt, ITERATIONS);
             byte[] key = pbkdf2.GetBytes(KEY_SIZE);
 
             // Create an Aes object
@@ -265,7 +270,7 @@ namespace Password_Manager.WebApp.Controllers
             return encrypted;
         }
 
-        static string DecryptStringFromBytes_Aes(byte[] cipherText, string masterPassword, byte[] IV)
+        static string DecryptStringFromBytes_Aes(byte[] cipherText, string masterPassword, byte[] IV, byte[] salt)
         {
             // Check arguments.
             if (cipherText == null || cipherText.Length <= 0)
@@ -278,7 +283,7 @@ namespace Password_Manager.WebApp.Controllers
             byte[] masterPassBytes = Encoding.ASCII.GetBytes(masterPassword);
 
             // Generate the key
-            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(masterPassBytes, SALT, ITERATIONS);
+            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(masterPassBytes, salt, ITERATIONS);
             byte[] key = pbkdf2.GetBytes(KEY_SIZE);
 
             // Declare the string used to hold
