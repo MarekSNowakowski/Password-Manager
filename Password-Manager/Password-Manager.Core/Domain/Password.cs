@@ -6,6 +6,7 @@
         public string Service { get; set; }
         public string Username { get; set; }
         public byte[] PassEncrypted { get; set; }
+        public byte[] Salt { get; set; }
         public string Author { get; set; }
     }
 }

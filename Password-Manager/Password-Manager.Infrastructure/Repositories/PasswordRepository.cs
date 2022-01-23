@@ -63,6 +63,7 @@ namespace Password_Manager.Infrastructure.Repositories
                 z.Service = s.Service;
                 z.Username = s.Username;
                 z.PassEncrypted = s.PassEncrypted;
+                z.Salt = s.Salt;
 
                 _appDbContext.SaveChanges();
                 await Task.CompletedTask;
