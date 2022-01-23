@@ -3,7 +3,7 @@
     public class CreatePassword
     {
         public string Service { get; set; }
-        public string Pass { get; set; }
+        public byte[] PassEncrypted { get; set; }
         public string Username { get; set; }
         public string Author { get; set; }
     }

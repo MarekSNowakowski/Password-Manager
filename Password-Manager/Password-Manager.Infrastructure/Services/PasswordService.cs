@@ -24,7 +24,7 @@ namespace Password_Manager.Infrastructure.Services
                 Id = x.Id,
                 Service = x.Service,
                 Username = x.Username,
-                Pass = x.Pass,
+                PassEncrypted = x.PassEncrypted,
                 Author = x.Author
             });
         }
@@ -36,7 +36,7 @@ namespace Password_Manager.Infrastructure.Services
                 Id = password.Id,
                 Service = password.Service,
                 Username = password.Username,
-                Pass = password.Pass,
+                PassEncrypted = password.PassEncrypted,
                 Author = password.Author
             };
 
@@ -67,7 +67,7 @@ namespace Password_Manager.Infrastructure.Services
             {
                 Service = password.Service,
                 Username = password.Username,
-                Pass = password.Pass,
+                PassEncrypted = password.PassEncrypted,
                 Author = password.Author
             };
 
@@ -84,7 +84,7 @@ namespace Password_Manager.Infrastructure.Services
             Password updatePassword = await _passwordRepository.GetAsync(id);
             updatePassword.Service = password.Service;
             updatePassword.Username = password.Username;
-            updatePassword.Pass = password.Pass;
+            updatePassword.PassEncrypted = password.PassEncrypted;
 
             await _passwordRepository.UpdateAsync(updatePassword);
         }
